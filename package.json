@@ -1,0 +1,32 @@
+{
+  "name": "nyt-react",
+  "version": "1.0.0",
+  "description": "Interact the with NYT API and comment on articles",
+  "main": "server.js",
+  "scripts": {
+    "server": "node server.js",
+    "client": "node scripts/start-client.js",
+    "start": "concurrently \"nodemon server.js\" \"npm run client\"",
+    "build": "node scripts/build.js",
+    "installDeps": "yarn install && cd client && yarn install && cd ..",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "git+https://github.com/quells/ucsd0725-nyt-react.git",
+  "author": "Kai Wells",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/quells/ucsd0725-nyt-react/issues"
+  },
+  "homepage": "https://github.com/quells/ucsd0725-nyt-react#readme",
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.13.3"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "mongoose": "^4.13.7",
+    "react-router-dom": "^4.2.2"
+  }
+}
