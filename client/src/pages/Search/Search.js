@@ -91,8 +91,21 @@ class Search extends Component {
             Search
           </FormButton>
         </Form>
+        <hr />
         <div>
-          <h2>Search Results</h2>
+          <Row>
+            <Col size="9"><h2>Search Results</h2></Col>
+            <Col size="3" addclasses="text-right">
+               {this.state.results.length ?
+                (
+                  <button type="button" className="btn btn-danger" onClick={() => this.setState({results: []})}>
+                    Clear
+                  </button>
+                ) : ""
+              }
+            </Col>
+          </Row>
+
           {this.state.results.length ?
             (
               <List>
@@ -113,7 +126,7 @@ class ArticleListItem extends Component {
   handleSave = this.handleSave.bind(this);
 
   handleSave() {
-    console.log(this.state);
+    API.saveArticle(this.state);
   }
 
   render() {
@@ -124,11 +137,14 @@ class ArticleListItem extends Component {
             <img src={this.state.image} className="article-image" alt={this.state.snippet} />
           </Col>
           <Col size="12 sm-8 md-9">
-            <h3>
-              <a href={this.state.url} target="_blank">{this.state.headline}</a>
+            <h3><a href={this.state.url} target="_blank">{this.state.headline}</a></h3>
+            <h4>
+              {this.state.author}
               <br />
-              <small>{this.state.author}</small>
-            </h3>
+              <small>
+                <span className="text-muted">{moment(this.state.published).format("MMMM Do YYYY")}</span>
+              </small>
+            </h4>
             <p>{this.state.snippet}</p>
             <div className="text-right">
               <button className="btn btn-success" onClick={this.handleSave}>Save</button>

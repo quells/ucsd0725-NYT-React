@@ -8,5 +8,8 @@ export default {
       startYear: startYear,
       endYear: endYear
     })
+  },
+  saveArticle: function(article) {
+    return axios.post("/api/save", article)
   }
 }
