@@ -5,5 +5,3 @@ export const List = ({children}) => (
     {children}
   </ul>
 );
-
-export default List;
