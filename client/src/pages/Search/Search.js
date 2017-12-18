@@ -7,15 +7,14 @@ import { Form, Input, FormButton } from "../../components/Form";
 let minYear = "1900";
 let maxYear = moment().format("YYYY");
 
-class Home extends Component {
+class Search extends Component {
   state = {
     searchTerm: "",
     minYear: minYear,
     maxYear: maxYear,
     startYear: minYear,
     endYear: maxYear,
-    results: [],
-    saved: []
+    results: []
   };
 
   handleInputChange = event => {
@@ -53,6 +52,7 @@ class Home extends Component {
     // TODO: double range slider for year selection
     return (
       <Container>
+        <hr />
         <Form inline>
           <Input
             type="text"
@@ -84,7 +84,6 @@ class Home extends Component {
             Search
           </FormButton>
         </Form>
-        <hr />
         <div>
           <h2>Search Results</h2>
           {this.state.results.length ?
@@ -95,20 +94,9 @@ class Home extends Component {
             )
           }
         </div>
-        <hr />
-        <div>
-          <h2>Saved Articles</h2>
-          {this.state.saved.length ?
-            (
-              <h3>All these saved articles</h3>
-            ) : (
-              <h3>No Saved Articles</h3>
-            )
-          }
-        </div>
       </Container>
     );
   }
 }
 
-export default Home;
+export default Search;
