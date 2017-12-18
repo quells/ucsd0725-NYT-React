@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 import moment from "moment";
+import shortid from "shortid";
+import API from "../../utils/API";
+import "./Search.css";
 
-import { Container } from "../../components/Grid";
+import { Container, Row, Col } from "../../components/Grid";
 import { Form, Input, FormButton } from "../../components/Form";
+import { List, ListItem } from "../../components/List";
 
 let minYear = "1900";
 let maxYear = moment().format("YYYY");
@@ -45,7 +49,10 @@ class Search extends Component {
     if (this.state.searchTerm.length < 1) return;
     if (parseInt(this.state.startYear, 10) === undefined) return;
     if (parseInt(this.state.startYear, 10) === undefined) return;
-    console.log(this.state.searchTerm, this.state.startYear, this.state.endYear);
+
+    API.getArticles(this.state)
+      .then(response => this.setState({results: response.data}))
+      .catch(err => console.error(err))
   };
 
   render() {
@@ -88,13 +95,47 @@ class Search extends Component {
           <h2>Search Results</h2>
           {this.state.results.length ?
             (
-              <h3>All these results</h3>
+              <List>
+              {this.state.results.map(r => <ArticleListItem key={shortid()} article={r} />)}
+              </List>
             ) : (
               <h3>No Results to Display</h3>
             )
           }
         </div>
       </Container>
+    );
+  }
+}
+
+class ArticleListItem extends Component {
+  state = this.props.article;
+  handleSave = this.handleSave.bind(this);
+
+  handleSave() {
+    console.log(this.state);
+  }
+
+  render() {
+    return (
+      <ListItem>
+        <Row>
+          <Col size="6 sm-4 md-3">
+            <img src={this.state.image} className="article-image" alt={this.state.snippet} />
+          </Col>
+          <Col size="12 sm-8 md-9">
+            <h3>
+              <a href={this.state.url} target="_blank">{this.state.headline}</a>
+              <br />
+              <small>{this.state.author}</small>
+            </h3>
+            <p>{this.state.snippet}</p>
+            <div className="text-right">
+              <button className="btn btn-success" onClick={this.handleSave}>Save</button>
+            </div>
+          </Col>
+        </Row>
+      </ListItem>
     );
   }
 }
