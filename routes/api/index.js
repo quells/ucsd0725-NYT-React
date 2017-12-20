@@ -3,8 +3,8 @@ const router = require("express").Router();
 const NYT = require("./nyt");
 const ArticleController = require("../../controllers/articleController");
 
-router.post("/nyt", (req, res) => {
-  NYT.search(req.body)
+router.get("/nyt", (req, res) => {
+  NYT.search(req.query)
     .then(results => res.json(results))
     .catch(err => {
       console.error(err);
