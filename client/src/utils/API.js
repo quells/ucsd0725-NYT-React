@@ -10,9 +10,12 @@ export default {
         endYear: endYear,
         oldestFirst: oldestFirst
       }
-    })
+    });
   },
   saveArticle: function(article) {
-    return axios.post("/api/save", article)
+    return axios.post("/api/save", article);
+  },
+  getSavedArticles: function() {
+    return axios.get("/api/saved");
   }
 }

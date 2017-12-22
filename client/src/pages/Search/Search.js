@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import moment from "moment";
 import shortid from "shortid";
+import { Redirect } from "react-router-dom";
 import API from "../../utils/API";
 import "./Search.css";
 
 import { Container, Row, Col } from "../../components/Grid";
 import { Form, Input, FormButton } from "../../components/Form";
-import { List, ListItem } from "../../components/List";
+import { List, ArticleListItem } from "../../components/List";
 
 let minYear = "1900";
 let maxYear = moment().format("YYYY");
@@ -19,6 +20,8 @@ class Search extends Component {
     startYear: minYear,
     endYear: maxYear,
     oldestFirst: false,
+    redirectToSaved: false,
+    latestSaved: null,
     results: []
   };
 
@@ -60,8 +63,17 @@ class Search extends Component {
     this.setState({oldestFirst: !this.state.oldestFirst}, this.handleSearch);
   }
 
+  handleSave = (article) => {
+    API.saveArticle(article)
+      .then(response => {
+        this.setState({redirectToSaved: true, latestSaved: response.data.id})
+      })
+      .catch(err => console.log(err));
+  }
+
   render() {
     // TODO: double range slider for year selection
+    if (this.state.redirectToSaved) return (<Redirect push to={"/saved/" + this.state.latestSaved} />);
     return (
       <Container>
         <hr />
@@ -117,11 +129,13 @@ class Search extends Component {
               }
             </Col>
           </Row>
-
           {this.state.results.length ?
             (
               <List>
-              {this.state.results.map(r => <ArticleListItem key={shortid()} article={r} />)}
+              {this.state.results.map(r => {
+                let button = (<button className="btn btn-success" onClick={() => this.handleSave(r)}>Save</button>);
+                return (<ArticleListItem key={shortid()} article={r} button={button} />);
+              })}
               </List>
             ) : (
               <h3>No Results to Display</h3>
@@ -129,41 +143,6 @@ class Search extends Component {
           }
         </div>
       </Container>
-    );
-  }
-}
-
-class ArticleListItem extends Component {
-  state = this.props.article;
-  handleSave = this.handleSave.bind(this);
-
-  handleSave() {
-    API.saveArticle(this.state);
-  }
-
-  render() {
-    return (
-      <ListItem>
-        <Row>
-          <Col size="6 sm-4 md-3">
-            <img src={this.state.image} className="article-image" alt={this.state.snippet} />
-          </Col>
-          <Col size="12 sm-8 md-9">
-            <h3><a href={this.state.url} target="_blank">{this.state.headline}</a></h3>
-            <h4>
-              {this.state.author}
-              <br />
-              <small>
-                <span className="text-muted">{moment(this.state.published).format("MMMM Do YYYY")}</span>
-              </small>
-            </h4>
-            <p>{this.state.snippet}</p>
-            <div className="text-right">
-              <button className="btn btn-success" onClick={this.handleSave}>Save</button>
-            </div>
-          </Col>
-        </Row>
-      </ListItem>
     );
   }
 }

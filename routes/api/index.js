@@ -14,7 +14,23 @@ router.get("/nyt", (req, res) => {
 
 router.post("/save", (req, res) => {
   ArticleController.addArticle(req.body)
-    .then(() => res.sendStatus(200))
+    .then(saved => {
+      res.json({id: saved._id});
+    })
+    .catch(err => {
+      if (err._id !== undefined) {
+        return res.json({id: err._id});
+      }
+      console.error(err);
+      res.sendStatus(500);
+    })
+});
+
+router.get("/saved", (req, res) => {
+  ArticleController.getArticles()
+    .then(saved => {
+      res.json(saved)
+    })
     .catch(err => {
       console.error(err);
       res.sendStatus(500);
