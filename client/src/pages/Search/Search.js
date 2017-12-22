@@ -9,7 +9,7 @@ import { Container, Row, Col } from "../../components/Grid";
 import { Form, Input, FormButton } from "../../components/Form";
 import { List, ArticleListItem } from "../../components/List";
 
-let minYear = "1900";
+let minYear = "1851";
 let maxYear = moment().format("YYYY");
 
 class Search extends Component {
