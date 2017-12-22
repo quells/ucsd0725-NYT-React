@@ -1,11 +1,11 @@
 import React from "react";
 
-export const Input = props => {
+export const TextArea = props => {
   let cn = "form-group";
   if (props.addclasses) cn += " " + props.addclasses;
   return (
     <div className={cn}>
-      <input className={"form-control" + (props.angry === "true" ? " is-invalid" : "")} {...props} />
+      <textarea className={"form-control" + (props.angry === "true" ? " is-invalid" : "")} {...props} />
     </div>
   );
 }
