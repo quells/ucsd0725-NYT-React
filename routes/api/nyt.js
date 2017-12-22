@@ -53,12 +53,15 @@ module.exports = {
           if (r.multimedia.length > 0) img_url = r.multimedia[0].url;
           if (img_url !== null) img_url = "http://nytimes.com/" + img_url;
 
+          let author = null;
+          if (r.byline != undefined && r.byline.original != undefined) author = r.byline.original;
+
           let result = {
             url: r.web_url || null,
             headline: r.headline.main || "MISSING_HEADLINE",
             snippet: r.snippet || null,
             published: r.pub_date || null,
-            author: r.byline.original || null,
+            author: author,
             image: img_url
           };
           return result;
