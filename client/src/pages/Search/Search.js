@@ -50,9 +50,10 @@ class Search extends Component {
 
   handleSearch = event => {
     if (event !== undefined) event.preventDefault();
-    if (this.state.searchTerm.length < 1) return;
+    if (this.state.searchTerm.length < 1) return this.setState({angry: true});
     if (parseInt(this.state.startYear, 10) === undefined) return;
     if (parseInt(this.state.startYear, 10) === undefined) return;
+    this.setState({angry: false});
 
     API.getArticles(this.state)
       .then(response => this.setState({results: response.data}))
@@ -74,36 +75,23 @@ class Search extends Component {
   render() {
     // TODO: double range slider for year selection
     if (this.state.redirectToSaved) return (<Redirect push to={"/saved/" + this.state.latestSaved} />);
+    let searchInputProps = {
+      min: this.state.minYear,
+      max: this.state.maxYear,
+      onChange: this.handleInputChange,
+      addclasses: "mb-2 mr-sm-2"
+    }
     return (
       <Container>
         <hr />
         <Form inline>
           <Input
-            type="text"
-            name="searchTerm"
-            placeholder="Search&hellip;"
-            value={this.state.searchTerm}
-            onChange={this.handleInputChange}
-            addclasses="mb-2 mr-sm-2"
+            type="text" name="searchTerm" placeholder="Search&hellip;"
+            value={this.state.searchTerm} angry={String(this.state.angry)}
+            {...searchInputProps}
           />
-          <Input
-            type="number"
-            name="startYear"
-            min={this.state.minYear}
-            max={this.state.maxYear}
-            value={this.state.startYear}
-            onChange={this.handleInputChange}
-            addclasses="mb-2 mr-sm-2"
-          />
-          <Input
-            type="number"
-            name="endYear"
-            min={this.state.minYear}
-            max={this.state.maxYear}
-            value={this.state.endYear}
-            onChange={this.handleInputChange}
-            addclasses="mb-2 mr-sm-2"
-          />
+          <Input type="number" name="startYear" value={this.state.startYear} {...searchInputProps} />
+          <Input type="number" name="endYear" value={this.state.endYear} {...searchInputProps} />
           <FormButton addclasses="btn-primary mb-2" onClick={this.handleSearch}>
             Search
           </FormButton>
