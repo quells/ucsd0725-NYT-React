@@ -8,7 +8,7 @@ import { List, ArticleListItem } from "../../components/List";
 
 class Saved extends Component {
   state = {
-    saved: [],
+    saved: null,
     lastDownload: Date.now()
   };
 
@@ -19,7 +19,7 @@ class Saved extends Component {
   }
 
   render() {
-    if (this.state.saved.length < 1 || Date.now() - this.state.lastDownload > 1000) this.getLatest();
+    if (this.state.saved === null || Date.now() - this.state.lastDownload > 1000) this.getLatest();
     return (
       <Container>
         <hr />
@@ -27,7 +27,7 @@ class Saved extends Component {
           <h2>
             <Link to="/saved">Saved Articles</Link>
           </h2>
-          {this.state.saved.length ?
+          {this.state.saved && this.state.saved.length ?
             (
               <List>
               {this.state.saved.map(s => {
