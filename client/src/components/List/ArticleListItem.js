@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import moment from "moment";
+import "./ArticleListItem.css";
 
 import { Row, Col } from "../Grid";
 
@@ -18,8 +19,8 @@ export const ArticleListItem = ({article, button}) => (
             <span className="text-muted">{moment(article.published).format("MMMM Do YYYY")}</span>
           </small>
         </h4>
-        <p>{article.snippet}</p>
-        <div className="text-right">
+        <p className="snippet">{article.snippet}</p>
+        <div className="text-right ali-button-container align-items-end">
           {button}
         </div>
       </Col>
