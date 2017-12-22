@@ -12,6 +12,6 @@ app.use(express.static("client/build"));
 app.use(require("./routes"))
 
 mongoose.Promise = global.Promise;
-mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/nyt-react", {useMongoClient: true});
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/nyt-react", {useMongoClient: true});
 
 app.listen(port, () => console.log(`API Server listening on port ${port}`));
