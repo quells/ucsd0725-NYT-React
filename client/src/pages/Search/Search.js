@@ -18,6 +18,7 @@ class Search extends Component {
     maxYear: maxYear,
     startYear: minYear,
     endYear: maxYear,
+    oldestFirst: false,
     results: []
   };
 
@@ -45,7 +46,7 @@ class Search extends Component {
   };
 
   handleSearch = event => {
-    event.preventDefault();
+    if (event !== undefined) event.preventDefault();
     if (this.state.searchTerm.length < 1) return;
     if (parseInt(this.state.startYear, 10) === undefined) return;
     if (parseInt(this.state.startYear, 10) === undefined) return;
@@ -54,6 +55,10 @@ class Search extends Component {
       .then(response => this.setState({results: response.data}))
       .catch(err => console.error(err))
   };
+
+  toggleSort = () => {
+    this.setState({oldestFirst: !this.state.oldestFirst}, this.handleSearch);
+  }
 
   render() {
     // TODO: double range slider for year selection
@@ -94,13 +99,20 @@ class Search extends Component {
         <hr />
         <div>
           <Row>
-            <Col size="9"><h2>Search Results</h2></Col>
-            <Col size="3" addclasses="text-right">
+            <Col size="12 sm-3">
+              <h2>Search Results</h2>
+            </Col>
+            <Col size="12 sm-9" addclasses="text-right">
                {this.state.results.length ?
                 (
-                  <button type="button" className="btn btn-danger" onClick={() => this.setState({results: []})}>
-                    Clear
-                  </button>
+                  <div>
+                    <button type="button" className="btn btn-info mr-3" onClick={this.toggleSort}>
+                      Sorting {this.state.oldestFirst ? "Oldest" : "Newest"} Articles First
+                    </button>
+                    <button type="button" className="btn btn-danger" onClick={() => this.setState({results: []})}>
+                      Clear
+                    </button>
+                  </div>
                 ) : ""
               }
             </Col>

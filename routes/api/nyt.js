@@ -26,7 +26,12 @@ function buildQuery(q) {
         break;
       case "endYear":
         // New Year's Eve
-        query.qs.end_date = `${value}1231`
+        query.qs.end_date = `${value}1231`;
+        break;
+      case "oldestFirst":
+        // Default is newest first
+        query.qs.sort = (value === "true") ? "oldest" : "newest";
+        break;
       default: break;
     }
   }
