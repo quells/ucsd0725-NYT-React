@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import moment from "moment";
 import shortid from "shortid";
 import { Link } from "react-router-dom";
 import API from "../../utils/API";
 
-import { Container, Row, Col } from "../../components/Grid";
+import { Container } from "../../components/Grid";
 import { List, ArticleListItem } from "../../components/List";
 
 class Saved extends Component {
@@ -13,12 +12,14 @@ class Saved extends Component {
     lastDownload: Date.now()
   };
 
+  getLatest() {
+    API.getSavedArticles()
+      .then(articles => this.setState({saved: articles.data, lastDownload: Date.now()}))
+      .catch(err => console.log(err));
+  }
+
   render() {
-    if (this.state.saved.length < 1 || Date.now() - this.state.lastDownload > 1000) {
-      API.getSavedArticles()
-        .then(articles => this.setState({saved: articles.data}))
-        .catch(err => console.log(err));
-    }
+    if (this.state.saved.length < 1 || Date.now() - this.state.lastDownload > 1000) this.getLatest();
     return (
       <Container>
         <hr />
