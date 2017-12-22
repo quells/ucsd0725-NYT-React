@@ -28,13 +28,54 @@ router.post("/save", (req, res) => {
 
 router.get("/saved", (req, res) => {
   ArticleController.getArticles()
-    .then(saved => {
-      res.json(saved)
-    })
+    .then(saved => res.json(saved))
     .catch(err => {
       console.error(err);
       res.sendStatus(500);
     })
 });
+
+router.get("/saved/:id", (req, res) => {
+  ArticleController.getArticle(req.params.id)
+    .then(saved => res.json(saved))
+    .catch(err => {
+      console.error(err);
+      res.sendStatus(500);
+    })
+})
+
+router.delete("/saved/:id", (req, res) => {
+  ArticleController.deleteArticle(req.params.id)
+    .then(() => res.sendStatus(200))
+    .catch(err => {
+      console.error(err);
+      res.sendStatus(500);
+    })
+})
+
+router.post("/comment", (req, res) => {
+  if (req.body.articleId === undefined) return res.sendStatus(400);
+  let username = (req.body.username.length > 0) ? req.body.username : "Anonymous";
+
+  ArticleController.addComment({
+    articleId: req.body.articleId,
+    user: username,
+    body: req.body.body
+  })
+    .then(() => res.sendStatus(200))
+    .catch(err => {
+      console.error(err);
+      res.sendStatus(500);
+    })
+})
+
+router.delete("/comment/:id", (req, res) => {
+  ArticleController.deleteComment(req.params.id)
+    .then(() => res.sendStatus(200))
+    .catch(err => {
+      console.error(err);
+      res.sendStatus(500);
+    })
+})
 
 module.exports = router;

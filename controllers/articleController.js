@@ -30,5 +30,23 @@ module.exports = {
     return Article.find({})
       .sort({dateCollected: -1})
       .limit(10)
+  },
+  getArticle: function(id) {
+    return Article.findById(id).populate({path: "comments", options: {sort: {date: -1}}});
+  },
+  deleteArticle: function(articleId) {
+    return Article.remove({_id: articleId})
+  },
+  addComment: function(comment) {
+    return Comment.create(comment)
+      .then(dbComment => Article.findById(comment.articleId).update({
+        $push: {comments: dbComment._id}
+      }))
+  },
+  deleteComment: function(commentId) {
+    return Comment.remove({_id: commentId})
+      .then(dbComment => Article.update({comments: commentId}, {
+        $pullAll: {comments: [commentId]}
+      }))
   }
 }
